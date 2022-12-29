@@ -56,7 +56,7 @@ public final class CloudNetCloudflareModule extends DriverModule {
   private final CloudFlareRecordManager recordManager = new CloudFlareRecordManager();
   private CloudflareConfiguration cloudflareConfiguration;
 
-  @ModuleTask(event = ModuleLifeCycle.LOADED)
+  @ModuleTask(lifecycle = ModuleLifeCycle.LOADED)
   public void convertConfiguration() {
     var config = this.readConfig().get("config");
     if (config != null) {
@@ -64,7 +64,7 @@ public final class CloudNetCloudflareModule extends DriverModule {
     }
   }
 
-  @ModuleTask(order = 127, event = ModuleLifeCycle.STARTED)
+  @ModuleTask(order = 127, lifecycle = ModuleLifeCycle.STARTED)
   public void loadConfiguration() {
     var config = this.readConfig(
       CloudflareConfiguration.class,
@@ -81,7 +81,7 @@ public final class CloudNetCloudflareModule extends DriverModule {
     this.updateConfiguration(config);
   }
 
-  @ModuleTask(order = 126, event = ModuleLifeCycle.STARTED)
+  @ModuleTask(order = 126, lifecycle = ModuleLifeCycle.STARTED)
   public void createNodeRecordsWhenNeeded() {
     for (var entry : this.cloudflareConfiguration.entries()) {
       if (entry.enabled()) {
@@ -121,12 +121,12 @@ public final class CloudNetCloudflareModule extends DriverModule {
     }
   }
 
-  @ModuleTask(order = 125, event = ModuleLifeCycle.STARTED)
+  @ModuleTask(order = 125, lifecycle = ModuleLifeCycle.STARTED)
   public void finishStartup() {
     this.registerListener(new CloudflareServiceStateListener(this));
   }
 
-  @ModuleTask(event = ModuleLifeCycle.RELOADING)
+  @ModuleTask(lifecycle = ModuleLifeCycle.RELOADING)
   public void handleReload() {
     // store the old entries for later comparison
     var oldEntries = this.cloudflareConfiguration.entries();
@@ -208,7 +208,7 @@ public final class CloudNetCloudflareModule extends DriverModule {
     this.createRecordsForEntries(addedEntries);
   }
 
-  @ModuleTask(order = 64, event = ModuleLifeCycle.STOPPED)
+  @ModuleTask(order = 64, lifecycle = ModuleLifeCycle.STOPPED)
   public void removeAllServiceRecords() {
     var deletionFutures = this.recordManager.trackedRecords().entries().stream()
       .filter(trackedRecordEntry -> {

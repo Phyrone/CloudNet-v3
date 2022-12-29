@@ -26,12 +26,12 @@ public class CloudNetMongoDatabaseModule extends DriverModule {
 
   private MongoDBConnectionConfig config;
 
-  @ModuleTask(order = 126, event = ModuleLifeCycle.LOADED)
+  @ModuleTask(order = 126, lifecycle = ModuleLifeCycle.LOADED)
   public void loadConfig() {
     this.config = this.readConfig(MongoDBConnectionConfig.class, MongoDBConnectionConfig::new);
   }
 
-  @ModuleTask(order = 125, event = ModuleLifeCycle.LOADED)
+  @ModuleTask(order = 125, lifecycle = ModuleLifeCycle.LOADED)
   public void registerDatabaseProvider() {
     this.serviceRegistry().registerProvider(
       AbstractDatabaseProvider.class,
@@ -39,7 +39,7 @@ public class CloudNetMongoDatabaseModule extends DriverModule {
       new MongoDBDatabaseProvider(this.config));
   }
 
-  @ModuleTask(order = 127, event = ModuleLifeCycle.STOPPED)
+  @ModuleTask(order = 127, lifecycle = ModuleLifeCycle.STOPPED)
   public void unregisterDatabaseProvider() {
     this.serviceRegistry().unregisterProvider(AbstractDatabaseProvider.class, this.config.databaseServiceName());
   }

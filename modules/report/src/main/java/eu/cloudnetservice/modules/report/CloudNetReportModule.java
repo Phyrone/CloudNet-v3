@@ -94,7 +94,7 @@ public final class CloudNetReportModule extends DriverModule {
     Node.instance().commandProvider().register(new ReportCommand(this));
   }
 
-  @ModuleTask(event = ModuleLifeCycle.RELOADING)
+  @ModuleTask(lifecycle = ModuleLifeCycle.RELOADING)
   public void handleReload() {
     this.configuration = this.readConfig(
       ReportConfiguration.class,

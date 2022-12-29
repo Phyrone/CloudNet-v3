@@ -32,7 +32,7 @@ public final class CloudNetCloudPermissionsModule extends DriverModule {
 
   private volatile CloudPermissionConfig permissionsConfig;
 
-  @ModuleTask(order = 127, event = ModuleLifeCycle.LOADED)
+  @ModuleTask(order = 127, lifecycle = ModuleLifeCycle.LOADED)
   public void init() {
     Node.instance().dataSyncRegistry().registerHandler(DataSyncHandler.<CloudPermissionConfig>builder()
       .key("cloudperms-config")
@@ -44,19 +44,19 @@ public final class CloudNetCloudPermissionsModule extends DriverModule {
       .build());
   }
 
-  @ModuleTask(order = 126, event = ModuleLifeCycle.LOADED)
+  @ModuleTask(order = 126, lifecycle = ModuleLifeCycle.LOADED)
   public void initConfig() {
     this.permissionsConfig = this.readConfig(
       CloudPermissionConfig.class,
       () -> new CloudPermissionConfig(true, List.of()));
   }
 
-  @ModuleTask(event = ModuleLifeCycle.RELOADING)
+  @ModuleTask(lifecycle = ModuleLifeCycle.RELOADING)
   public void reload() {
     this.initConfig();
   }
 
-  @ModuleTask(order = 124, event = ModuleLifeCycle.STARTED)
+  @ModuleTask(order = 124, lifecycle = ModuleLifeCycle.STARTED)
   public void registerListeners() {
     this.registerListener(new PluginIncludeListener(
       "cloudnet-cloudperms",

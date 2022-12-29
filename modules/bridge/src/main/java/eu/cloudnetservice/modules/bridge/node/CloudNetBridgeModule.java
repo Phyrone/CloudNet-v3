@@ -48,14 +48,14 @@ public final class CloudNetBridgeModule extends DriverModule {
 
   private static final Logger LOGGER = LogManager.logger(CloudNetBridgeModule.class);
 
-  @ModuleTask(order = 50, event = ModuleLifeCycle.LOADED)
+  @ModuleTask(order = 50, lifecycle = ModuleLifeCycle.LOADED)
   public void initNetworkHelpers() {
     DefaultObjectMapper.DEFAULT_MAPPER
       .registerBinding(Title.class, new TitleObjectSerializer(), false)
       .registerBinding(Component.class, new ComponentObjectSerializer(), false);
   }
 
-  @ModuleTask(order = 40, event = ModuleLifeCycle.LOADED)
+  @ModuleTask(order = 40, lifecycle = ModuleLifeCycle.LOADED)
   public void convertOldConfiguration() {
     // read the file
     var config = JsonDocument.newDocument(this.configPath()).getDocument("config");
@@ -88,7 +88,7 @@ public final class CloudNetBridgeModule extends DriverModule {
     }
   }
 
-  @ModuleTask(event = ModuleLifeCycle.STARTED)
+  @ModuleTask(lifecycle = ModuleLifeCycle.STARTED)
   public void convertOldDatabaseEntries() {
     var playerDb = Node.instance().databaseProvider().database(BRIDGE_PLAYER_DB_NAME);
     // read the first player from the database - if the first player is valid we don't need to take a look at the other
@@ -151,7 +151,7 @@ public final class CloudNetBridgeModule extends DriverModule {
     }
   }
 
-  @ModuleTask(event = ModuleLifeCycle.LOADED)
+  @ModuleTask(lifecycle = ModuleLifeCycle.LOADED)
   public void initModule() {
     // init the bridge management
     var management = new NodeBridgeManagement(
@@ -175,13 +175,13 @@ public final class CloudNetBridgeModule extends DriverModule {
     Node.instance().httpServer().annotationParser().parseAndRegister(new V2HttpHandlerBridge());
   }
 
-  @ModuleTask(event = ModuleLifeCycle.STARTED)
+  @ModuleTask(lifecycle = ModuleLifeCycle.STARTED)
   public void registerCommand() {
     // register the bridge command
     Node.instance().commandProvider().register(new BridgeCommand(ServiceRegistry.first(BridgeManagement.class)));
   }
 
-  @ModuleTask(event = ModuleLifeCycle.RELOADING)
+  @ModuleTask(lifecycle = ModuleLifeCycle.RELOADING)
   public void handleReload() {
     var management = ServiceRegistry.first(BridgeManagement.class);
     if (management != null) {

@@ -80,12 +80,12 @@ public class DockerizedServicesModule extends DriverModule {
         this.configuration));
   }
 
-  @ModuleTask(event = ModuleLifeCycle.STARTED)
+  @ModuleTask(lifecycle = ModuleLifeCycle.STARTED)
   public void registerComponents() {
     Node.instance().commandProvider().register(new DockerCommand(this));
   }
 
-  @ModuleTask(event = ModuleLifeCycle.STOPPED)
+  @ModuleTask(lifecycle = ModuleLifeCycle.STOPPED)
   public void unregisterServiceFactory() {
     Node.instance().cloudServiceProvider().removeCloudServiceFactory(this.configuration.factoryName());
   }

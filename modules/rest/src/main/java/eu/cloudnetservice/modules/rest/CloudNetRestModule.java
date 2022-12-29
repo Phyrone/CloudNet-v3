@@ -39,7 +39,7 @@ import eu.cloudnetservice.node.http.annotation.SecurityAnnotationExtension;
 
 public final class CloudNetRestModule extends DriverModule {
 
-  @ModuleTask(order = 120, event = ModuleLifeCycle.STARTED)
+  @ModuleTask(order = 120, lifecycle = ModuleLifeCycle.STARTED)
   public void initHttpHandlers() {
     var authentication = new V2HttpAuthentication();
     var annotationParser = Node.instance().httpServer().annotationParser();

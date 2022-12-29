@@ -181,7 +181,7 @@ public class CloudNetNPCModule extends DriverModule {
     Node.instance().commandProvider().register(new NPCCommand(management));
   }
 
-  @ModuleTask(event = ModuleLifeCycle.RELOADING)
+  @ModuleTask(lifecycle = ModuleLifeCycle.RELOADING)
   public void handleReload() {
     var management = this.serviceRegistry().firstProvider(NPCManagement.class);
     if (management != null) {

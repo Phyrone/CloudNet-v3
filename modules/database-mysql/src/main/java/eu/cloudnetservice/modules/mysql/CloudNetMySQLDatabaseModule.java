@@ -31,7 +31,7 @@ public final class CloudNetMySQLDatabaseModule extends DriverModule {
 
   private volatile MySQLConfiguration configuration;
 
-  @ModuleTask(order = 127, event = ModuleLifeCycle.LOADED)
+  @ModuleTask(order = 127, lifecycle = ModuleLifeCycle.LOADED)
   public void convertConfig() {
     var config = this.readConfig();
     if (config.contains("addresses")) {
@@ -45,7 +45,7 @@ public final class CloudNetMySQLDatabaseModule extends DriverModule {
     }
   }
 
-  @ModuleTask(order = 125, event = ModuleLifeCycle.LOADED)
+  @ModuleTask(order = 125, lifecycle = ModuleLifeCycle.LOADED)
   public void registerDatabaseProvider() {
     this.configuration = this.readConfig(MySQLConfiguration.class, () -> new MySQLConfiguration(
       "root",
@@ -60,7 +60,7 @@ public final class CloudNetMySQLDatabaseModule extends DriverModule {
       new MySQLDatabaseProvider(this.configuration, null));
   }
 
-  @ModuleTask(order = 127, event = ModuleLifeCycle.STOPPED)
+  @ModuleTask(order = 127, lifecycle = ModuleLifeCycle.STOPPED)
   public void unregisterDatabaseProvider() {
     this.serviceRegistry().unregisterProvider(AbstractDatabaseProvider.class, this.configuration.databaseServiceName());
   }

@@ -301,7 +301,7 @@ public class DefaultModuleWrapper implements ModuleWrapper {
         }
         // now try to register the method
         try {
-          var entries = result.computeIfAbsent(moduleTask.event(), $ -> new ArrayList<>());
+          var entries = result.computeIfAbsent(moduleTask.lifecycle(), $ -> new ArrayList<>());
           entries.add(new DefaultModuleTaskEntry(this, moduleTask, method));
           // re-sort the list now as we don't want to re-iterate later
           entries.sort(TASK_COMPARATOR);
